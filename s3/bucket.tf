@@ -2,6 +2,9 @@ resource "aws_s3_bucket" "demos3" {
   versioning {
     enabled = true
   }
+  versioning {
+    enabled = true
+  }
     bucket = "${var.bucket_name}" 
     acl = "${var.acl_value}"   
   

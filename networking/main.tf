@@ -11,18 +11,20 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = true
 
   tags = {
-    Name = "vpc-${random_integer.random.id}"
+    Name     = "vpc-${random_integer.random.id}"
+    git_file = "terraform/aws/ec2.tf"
   }
 }
 
 resource "aws_subnet" "public_subnet" {
-  count                   = length(var.public_cidrs)
-  vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.public_cidrs[count.index]
-  availability_zone       = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"][count.index]
+  count             = length(var.public_cidrs)
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.public_cidrs[count.index]
+  availability_zone = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"][count.index]
 
   tags = {
-    Name = "public_${count.index + 1}"
+    Name     = "public_${count.index + 1}"
+    git_file = "terraform/aws/ec2.tf"
   }
 }
 
@@ -36,7 +38,8 @@ resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "igw"
+    Name     = "igw"
+    git_file = "terraform/aws/ec2.tf"
   }
   lifecycle {
     create_before_destroy = true
@@ -47,7 +50,8 @@ resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "public"
+    Name     = "public"
+    git_file = "terraform/aws/ec2.tf"
   }
 }
 
@@ -74,5 +78,8 @@ resource "aws_security_group" "web_sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    git_file = "terraform/aws/ec2.tf"
   }
 }

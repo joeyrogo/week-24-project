@@ -23,10 +23,11 @@ resource "aws_launch_template" "web" {
   vpc_security_group_ids = [var.web_sg]
   user_data              = filebase64("install_apache.sh")
   key_name               = "jenkins"
- 
+
 
   tags = {
-    Name = "web"
+    Name     = "web"
+    git_file = "terraform/aws/ec2.tf"
   }
 }
 
